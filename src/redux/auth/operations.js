@@ -53,27 +53,6 @@ export const logOut = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
   }
 });
 
-// export const refreshUser = createAsyncThunk(
-//   "auth/refresh",
-//   async (_, thunkAPI) => {
-//     const state = thunkAPI.getState();
-//     const persistedToken = state.auth.token;
-
-//     if (persistedToken === null) {
-//       return thunkAPI.rejectWithValue("Token not found");
-//     }
-//     token.setAuth(persistedToken);
-//     try {
-//       const { data } = await axios.get("/users/current");
-//       return data;
-//     } catch (error) {
-//       toast.error("User is not found!", {
-//         icon: "🤷‍♂️",
-//       });
-//       return thunkAPI.rejectWithValue(error.code);
-//     }
-//   }
-// );
 export const refreshUser = createAsyncThunk(
   "auth/refresh",
   async (_, { rejectWithValue, getState }) => {
@@ -82,7 +61,7 @@ export const refreshUser = createAsyncThunk(
       if (!auth.token) {
         return rejectWithValue("no token");
       }
-      setHeaderToken(auth.token);
+      token.setAuth(auth.token);
       const { data } = await axios.get("users/current");
       return data;
     } catch (error) {
